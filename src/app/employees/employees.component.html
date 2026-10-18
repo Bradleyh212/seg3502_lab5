@@ -1,5 +1,12 @@
 <a class="btn btn-primary" [routerLink]="['/employee']">Add Employee</a>
 <div class="container">
+  @if (errorMessage) {
+    <div class="alert alert-danger" role="alert">{{errorMessage}}</div>
+  }
+  @if (loading) {
+    <p role="status">Loading employees…</p>
+  }
+  @if (employees$ | async; as employeeList) {
   <table class="table">
     <thead>
     <tr>
@@ -12,7 +19,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let emp of employees.$ | async">
+    <tr *ngFor="let emp of employeeList">
       <td>{{emp.name}}</td>
       <td>{{emp.dateOfBirth | date :'d/MMM/y'}}</td>
       <td>{{emp.city}}</td>
@@ -20,6 +27,10 @@
       <td>{{emp.gender}}</td>
       <td>{{emp.email}}</td>
     </tr>
+    @if (!loading && !errorMessage && employeeList.length === 0) {
+      <tr><td colspan="6">No employees saved yet.</td></tr>
+    }
     </tbody>
   </table>
+  }
 </div>

@@ -1,4 +1,5 @@
 export class Employee {
+  public id?: string;
   constructor(
     public name: string,
     public dateOfBirth: Date,

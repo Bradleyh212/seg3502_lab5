@@ -37,9 +37,22 @@ Le projet contient déjà :
 - le modèle `Employee` ;
 - le bouton **Employee List** ;
 - le tableau d'affichage des employés ;
-- un `EmployeeService` qui garde actuellement les employés seulement en mémoire.
+- un `EmployeeService` qui enregistre et lit les employés dans Cloud Firestore.
 
-Le travail du laboratoire consiste à remplacer/étendre cette persistance en mémoire avec **Cloud Firestore**, conformément aux consignes du laboratoire.
+## Configuration Firestore
+
+AngularFire 18 et Firebase sont déjà installés.
+
+1. Créez un projet dans la console Firebase et ajoutez une application Web.
+2. Copiez les valeurs de `firebaseConfig` dans `src/environments/environment.ts`, sous `firebase`.
+3. Créez la base Firestore par défaut, en mode test pour le laboratoire comme indiqué dans l'énoncé. Ce mode donne un accès temporaire aux données : utilisez uniquement des employés fictifs.
+4. Redémarrez `npm start` si nécessaire.
+
+La collection `employees` est créée automatiquement au premier enregistrement. Le formulaire attend la confirmation de Firestore avant de vider les champs et d'ouvrir la liste. La liste écoute les changements de la collection et convertit les dates Firestore pour leur affichage dans Angular.
+
+Pour vérifier : ajoutez un employé fictif, rechargez la page et ouvrez Employee List. L'employé doit rester visible et son document doit apparaître dans la console Firebase.
+
+Sans configuration Firebase, l'interface reste accessible mais les opérations de sauvegarde et de lecture affichent une erreur. Aucun stockage en mémoire ne remplace silencieusement Firestore.
 
 ## Important
 

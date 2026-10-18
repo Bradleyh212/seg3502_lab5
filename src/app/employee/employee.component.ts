@@ -31,15 +31,27 @@ export class EmployeeComponent {
   get gender(): AbstractControl<string> {return <AbstractControl<string>>this.employeeForm.get('gender'); }
   get email(): AbstractControl<string> {return <AbstractControl<string>>this.employeeForm.get('email'); }
 
-  onSubmit() {
+  saving = false;
+  errorMessage = '';
+
+  async onSubmit(): Promise<void> {
+    if (this.employeeForm.invalid || this.saving) return;
+    this.saving = true;
+    this.errorMessage = '';
     const employee: Employee = new Employee(this.name.value,
-      new Date(this.dateOfBirth.value),
+      new Date(this.dateOfBirth.value + 'T00:00:00'),
       this.city.value,
       this.salary.value,
       this.gender.value,
       this.email.value);
-    this.employeeService.addEmployee(employee);
-    this.employeeForm.reset();
-    this.router.navigate(['/employees']).then(() => {});
+    try {
+      await this.employeeService.addEmployee(employee);
+      this.employeeForm.reset();
+      await this.router.navigate(['/employees']);
+    } catch {
+      this.errorMessage = 'Unable to save the employee. Check the Firebase configuration, Firestore permissions and your connection.';
+    } finally {
+      this.saving = false;
+    }
   }
 }

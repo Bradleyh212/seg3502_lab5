@@ -50,6 +50,11 @@
         Wrong email format.
       </div>
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="employeeForm.invalid">Submit</button>
+    @if (errorMessage) {
+      <div class="alert alert-danger" role="alert">{{errorMessage}}</div>
+    }
+    <button type="submit" class="btn btn-success" [disabled]="employeeForm.invalid || saving">
+      {{ saving ? 'Saving…' : 'Submit' }}
+    </button>
   </form>
 </div>
